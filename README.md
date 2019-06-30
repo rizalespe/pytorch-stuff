@@ -7,6 +7,6 @@ This repository containing custom codes/stuff related to some PyTorch modificati
 3. Load the prepared dataset object with certain settings
 4. Define the network, loss function, and optimizer
 5. Training loop
-*Forward section
-*Backward section
-*Optimize section
+  * Forward section
+  * Backward section
+  * Optimize section
