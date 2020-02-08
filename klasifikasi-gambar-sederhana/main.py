@@ -56,14 +56,15 @@ def main(args):
     # Model initialization
     model = CustomModel(num_classes).to(device)
 
+    # Generate network diagrams
+    images_for_graph, labels = next(iter(train_loader))
+    images_for_graph = images_for_graph.to(device)
+    writer.add_graph(model, images_for_graph)
+    writer.close()
+
     # Loss and optimizer
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
-
-    # Generate network diagrams
-    images, labels = next(iter(train_loader))
-    writer.add_graph(model, images)
-    writer.close()
 
     # Train the model
     total_step = len(train_loader)
