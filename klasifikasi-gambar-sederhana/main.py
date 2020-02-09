@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 import torchvision
 import torchvision.transforms as transforms
-from model import CustomModel
+from model import CustomModel, CustomPretrain
 from torch.utils.tensorboard import SummaryWriter
 
 def main(args):
@@ -24,6 +24,7 @@ def main(args):
     train_transformations = transforms.Compose([
         transforms.RandomHorizontalFlip(),
         transforms.RandomCrop(args.crop_size, padding=4),
+        transforms.CenterCrop(size=224),  # Image net standards
         transforms.ToTensor(),
         transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
     ])
@@ -32,10 +33,10 @@ def main(args):
     test_transformations = transforms.Compose([
         transforms.RandomHorizontalFlip(),
         transforms.RandomCrop(args.crop_size, padding=4),
+        transforms.CenterCrop(size=224),  # Image net standards
         transforms.ToTensor(),
         transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
     ])
-
 
     # Dataset configuration
     train_dataset = torchvision.datasets.ImageFolder(root=args.training_dir, 
@@ -54,7 +55,8 @@ def main(args):
                                             shuffle=False)
 
     # Model initialization
-    model = CustomModel(num_classes).to(device)
+    # model = CustomModel(num_classes).to(device)
+    model = CustomPretrain(num_classes).to(device)
 
     # Generate network diagrams
     images_for_graph, labels = next(iter(train_loader))
@@ -115,7 +117,7 @@ def main(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     
-    parser.add_argument('--tensorboard_dir', type=str, default='runs/', help = "merupakan direktori yang berisi log yang ditampilkan pada Tensorboard")
+    parser.add_argument('--tensorboard_dir', type=str, default='', help = "merupakan direktori yang berisi log yang ditampilkan pada Tensorboard")
     parser.add_argument('--num_epoch', type=int, default=5, help = "jumlah iterasi/epoch yang dilakukan pada proses training")
     parser.add_argument('--num_class', type=int, default=1, help = "jumlah kelas yang ada pada dataset")
     parser.add_argument('--batch_size', type=int, default=1, help = "jumlah data yang terkandung pada setiap batch saat proses training")
@@ -127,4 +129,3 @@ if __name__ == '__main__':
     
     args = parser.parse_args()
     main(args)
-  
