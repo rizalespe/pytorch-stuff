@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 import torchvision
 import torchvision.transforms as transforms
-from model import CustomModel, CustomPretrain
+from model import CustomPretrainResNext50, CustomModel, CustomPretrainResnet18, CustomPretrainResnet152, CustomPretrainAlexNet, CustomPretrainVGG16
 from torch.utils.tensorboard import SummaryWriter
 
 def main(args):
@@ -56,8 +56,13 @@ def main(args):
 
     # Model initialization
     # model = CustomModel(num_classes).to(device)
-    model = CustomPretrain(num_classes).to(device)
-
+    # model = CustomPretrainResnet18(num_classes).to(device)
+    # model = CustomPretrainResnet152(num_classes).to(device)
+    # model = CustomPretrainAlexNet(num_classes).to(device)
+    # model = CustomPretrainVGG16(num_classes).to(device)
+    model = CustomPretrainResNext50(num_classes).to(device)
+    
+    
     # Generate network diagrams
     images_for_graph, labels = next(iter(train_loader))
     images_for_graph = images_for_graph.to(device)
