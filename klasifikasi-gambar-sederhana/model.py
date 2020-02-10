@@ -3,19 +3,75 @@ import torch
 import torch.nn as nn
 import torchvision.models as models
 
-class CustomPretrain(nn.Module):
+
+class CustomPretrainResNext50(nn.Module):
     def __init__(self, num_class):
-        super(CustomPretrain, self).__init__()
-        resnet = models.resnet18(pretrained=True)
-        for param in resnet.parameters():
+        super(CustomPretrainResNext50, self).__init__()
+        model = models.resnext50_32x4d(pretrained=True)
+        for param in model.parameters():
             param.requires_grad = False
         
-        resnet.fc = nn.Linear(resnet.fc.in_features, num_class)        
-        self.resnet = resnet
+        model.fc = nn.Linear(model.fc.in_features, num_class)       
+        self.model = model
 
     def forward(self, image):        
-        # image = image.view(-1, )
-        out = self.resnet(image)
+        out = self.model(image)
+        return out
+
+class CustomPretrainVGG16(nn.Module):
+    def __init__(self, num_class):
+        super(CustomPretrainVGG16, self).__init__()
+        model = models.vgg16(pretrained=True)
+        for param in model.parameters():
+            param.requires_grad = False
+        
+        model.classifier[6] = nn.Linear(model.classifier[3].out_features, num_class)       
+        self.model = model
+
+    def forward(self, image):        
+        out = self.model(image)
+        return out
+
+class CustomPretrainResnet18(nn.Module):
+    def __init__(self, num_class):
+        super(CustomPretrainResnet18, self).__init__()
+        model = models.resnet18(pretrained=True)
+        for param in model.parameters():
+            param.requires_grad = False
+        
+        model.fc = nn.Linear(model.fc.in_features, num_class)        
+        self.model = model
+
+    def forward(self, image):        
+        out = self.model(image)
+        return out
+
+class CustomPretrainResnet152(nn.Module):
+    def __init__(self, num_class):
+        super(CustomPretrainResnet152, self).__init__()
+        model = models.resnet152(pretrained=True)
+        for param in model.parameters():
+            param.requires_grad = False
+        
+        model.fc = nn.Linear(model.fc.in_features, num_class)        
+        self.model = model
+
+    def forward(self, image):        
+        out = self.model(image)
+        return out
+
+class CustomPretrainAlexNet(nn.Module):
+    def __init__(self, num_class):
+        super(CustomPretrainAlexNet, self).__init__()
+        model = models.alexnet(pretrained=True)
+        for param in model.parameters():
+            param.requires_grad = False
+    
+        model.classifier[6] = nn.Linear(model.classifier[4].out_features, num_class)        
+        self.model = model
+
+    def forward(self, image):        
+        out = self.model(image)
         return out
 
 class CustomModel(nn.Module):
