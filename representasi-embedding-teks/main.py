@@ -41,11 +41,12 @@ with open(datasource) as csv_file:
 
     """Mapping list of document to index based on the vocabulary file
     """
-    maps = Vocabulary().map(vocabulary_file='vocab.pkl', 
+    vocabulary_file= 'vocab.pkl'
+    maps = Vocabulary().map(vocabulary_file=vocabulary_file, 
                             list_document=tweet_collection,
                             contain_header=True)
     
-    vocabulary_file= 'vocab.pkl'
+    
     with open(vocabulary_file, 'rb') as f:
         vocab = pickle.load(f)
 
