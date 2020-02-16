@@ -72,9 +72,6 @@ class Vocabulary(object):
         # saving the word with the index in pickle file format
         with open(save_to_file, 'wb') as f:
             pickle.dump(vocab, f)
-        
-        print("Total vocabulary size: %d" %len(vocab))
-        print("Saved the vocabulary wrapper to ", save_to_file)
     
     def map(self, vocabulary_file, list_document, contain_header=False):
         # Translate from text document to the specified vocabulary file

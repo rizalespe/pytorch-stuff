@@ -4,7 +4,7 @@
 
 import torch
 import torch.nn as nn
-from torch.nn.utils.rnn import pack_padded_sequence
+import torch.nn.utils.rnn as rnn_utils
 import csv
 import pickle
 from helper import Vocabulary, TextPreprocess
@@ -29,7 +29,10 @@ with open(datasource) as csv_file:
         text_tweet = row[3]
         tweet_collection.append(text_tweet)
     
-    """Generating the vocabulary file (index, word) from a csv file
+    print("Jumlah dokumen tweet dalam list: ", len(tweet_collection))
+    
+    """ Generating the vocabulary file (index, word) from a csv file and save 
+        only word >= minimum threshold value
     """
     Vocabulary().generate(list_document= tweet_collection, 
                             threshold=minimum_treshold,
@@ -44,14 +47,24 @@ with open(datasource) as csv_file:
     
     vocabulary_file= 'vocab.pkl'
     with open(vocabulary_file, 'rb') as f:
-        vocab = pickle.load(f) 
+        vocab = pickle.load(f)
+
     vocab_size = len(vocab)
-    embed = nn.Embedding(vocab_size, embedding_dim=5)
+    print("Jumlah kata yang ada pada vocabulary: ", vocab_size)
+
+    #instantiate embedding layer
+    embed = nn.Embedding(vocab_size, embedding_dim=10)
+    print("Ukuran layer embedding: ", embed)
     
+    # generate list of document
+    list_docs = []
     for x in maps:
-        y = embed(torch.LongTensor(x))
-        print(y.shape)
-
-# make embedding representation of text document
-# apply to RNN
-
+        list_docs.append(torch.LongTensor(x))
+    
+    """Pad the sequences: proses ini meratakan dokumen yang memiliki panjang 
+    kata berbeda-beda. Setelah melalui proses pad sequence ini, seluruh dokumen 
+    pada corpus akan memiliki panjang yang sama.
+    """
+    list_docs = rnn_utils.pad_sequence(list_docs, batch_first=True)
+    embedded_doc = embed(list_docs)
+    print("Output embedding: ", embedded_doc.shape)
