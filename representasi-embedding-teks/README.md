@@ -8,3 +8,7 @@ Catatan ini dibuat untuk memberikan gambaran singkat tentang bagaimana mengubah 
 5. Instansiasi objek Embedding layer. Pada catatan ini, saya menggunakan framework deep learning Pytorch. Berikut dokumentasi resmi [Pytorch Embedding](https://pytorch.org/docs/stable/nn.html#embedding)
 6. Dalam kumpulan dokumen (corpus), setiap dokumen memiliki jumlah kata yang berbeda-beda. Untuk menyeragamkan jumlah kata tersebut dapat kita lakukan padding. Lebih jelasnya pada pada dokumentasi resmi [Pytorch pad_sequence](https://pytorch.org/docs/stable/nn.html#pad-sequence)
 7. Langkah no. 6 menghasilkan tensor yang kemudian akan menjadi input pada embedding layer yang telah diinstansiasi pada proses no. 5
+
+```
+Word embedding — the mapping of words into numerical vector spaces
+```

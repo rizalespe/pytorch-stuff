@@ -6,6 +6,7 @@ import torchvision.transforms as transforms
 from model import CustomPretrainResNext50, CustomModel, CustomPretrainResnet18, CustomPretrainResnet152, CustomPretrainAlexNet, CustomPretrainVGG16
 from torch.utils.tensorboard import SummaryWriter
 
+
 def main(args):
     
     # Device configuration
